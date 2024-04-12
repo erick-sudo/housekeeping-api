@@ -10,6 +10,7 @@ from .utils import send_normal_email
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework.exceptions import AuthenticationFailed
 from django.conf import settings
+from .exception_handlers import SparkleSyncException
 
 class UserRegisterResializer(serializers.ModelSerializer):
     password=serializers.CharField(max_length=68, min_length=6, write_only=True)
@@ -37,15 +38,15 @@ class UserRegisterResializer(serializers.ModelSerializer):
         return user
     
 class LoginSerializer(serializers.ModelSerializer):
-    email=serializers.EmailField(max_length=255, min_length=6)
+    email=serializers.EmailField(max_length=255, min_length=6, write_only=True)
     password=serializers.CharField(max_length=68, write_only=True)
-    full_name=serializers.CharField(max_length=255, read_only=True)
     access_token=serializers.CharField(max_length=255, read_only=True)
     refresh_token=serializers.CharField(max_length=255, read_only=True)
+    remember_me=serializers.BooleanField(default=False)
     
     class Meta:
         model=User
-        fields=['email', 'password', 'full_name', 'access_token', 'refresh_token']
+        fields=['email', 'password', 'access_token', 'refresh_token', 'remember_me']
         
     def validate(self, attrs):
         email=attrs.get('email')
@@ -55,16 +56,15 @@ class LoginSerializer(serializers.ModelSerializer):
         user=authenticate(request, email=email, password=password)
         
         if not user:
-            raise AuthenticationFailed("invalid credentials, please try again")
+            raise SparkleSyncException(detail={'message': f"invalid credentials"}, failure_code="AUTHENTICATION", status_code=400)
         
         if not user.is_verified:
-            raise AuthenticationFailed("account not verified, please verify your account")
+            raise SparkleSyncException(detail={'message': "account not verified, please verify your account"}, failure_code="NOT_VERIFIED", status_code=403)
         
         user_tokens = user.tokens()
         
         return {
-            'email': user.email,
-            'full_name': user.get_full_name,
+            'remember_me': attrs.get('remember_me'),
             'refresh_token': str(user_tokens.get('refresh_token')), 
             'access_token': str(user_tokens.get('access_token')), 
         }
@@ -82,14 +82,11 @@ class PasswordResetRequestViewSerializer(serializers.Serializer):
             user = User.objects.get(email=email)
             
             if not user.is_verified:
-                raise AuthenticationFailed("account not verified, please verify your account")
+                raise SparkleSyncException(detail={'message': "account not verified, please verify your account"}, failure_code="NOT_VERIFIED", status_code=403)
             
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
             token = PasswordResetTokenGenerator().make_token(user)
-            request = self.context.get('request')
-            sites_domain = get_current_site(request).domain
             relative_link = f"/reset_password/{uidb64}/{token}"
-            # relative_link = reverse('confirm-password-reset', kwargs={'uidb64': uidb64, 'token': token})
             absolute_link = f"{settings.FRONT_END_URL}{relative_link}"
             email_body=f"Hello {user.first_name}, use the link below to reset your password \n {absolute_link}"
             
@@ -101,7 +98,7 @@ class PasswordResetRequestViewSerializer(serializers.Serializer):
             
             send_normal_email(data)
         else:
-            raise AuthenticationFailed(detail=f"User by email {email} does not exist")
+            raise SparkleSyncException(detail={'message': f"User by email {email} does not exist"}, failure_code="NOT_FOUND", status_code=404)
         
         return super().validate(attrs)
     
@@ -131,27 +128,34 @@ class SetNewPasswordSerializer(serializers.Serializer):
             raise AuthenticationFailed("reset link is invalid or has expired", 401)
         
         if password!= password_confirmation:
-            raise AuthenticationFailed("passwords do not match", 422)
+            raise SparkleSyncException(detail={'message': {'password_confirmation': ["passwords do not match"]}}, failure_code="VALIDATION_ERRORS", status_code=422)
         
         user.set_password(password)
         user.save()
         return user
     
 class LogoutUserSerializer(serializers.Serializer):
-    refresh_token = serializers.CharField()
-    
-    default_error_message={
-        'bad-token': ('Token is Invalid or has expired')
+       
+    default_error_messages = {
+        'bad_token': ('Token is invalid or has expired'),
+        'no_token': ('No refresh token provided'),
     }
     
     def validate(self, attrs):
-        self.token=attrs.get('refresh_token')
-        return super().validate(attrs)
-    
-    def save(self, **kwargs):
+        if 'request' not in self.context:
+            raise ValueError('The serializer context must contain the request.')
+        
+        request = self.context['request']
+        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT['REFRESH_COOKIE'])
+        
+        if not refresh_token:
+            return self.fail('no_token')
+        
+        self.refresh_token = refresh_token
+        
         try:
-            token = RefreshToken(self.token)
+            token = RefreshToken(self.refresh_token)
             token.blacklist()
         except TokenError:
             return self.fail('bad_token')
-        return super().save(**kwargs)
+        return super().validate(attrs)

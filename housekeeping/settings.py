@@ -38,10 +38,10 @@ ALLOWED_HOSTS = [
     "localhost"
 ]
 
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173"
+    'http://localhost:5173',
 ]
-
 
 # Application definition
 
@@ -62,25 +62,33 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+        'main.authentication.SparkleSyncAuthentication',
+    ),
+    'EXCEPTION_HANDLER': 'main.exception_handlers.sparkle_sync_exception_handler'
 }
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "AUTH_HEADER_TYPES": ("Bearer",)
+    "REFRESH_COOKIE": "refresh_token",
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    'AUTH_COOKIE': 'access_token',  
+    'AUTH_COOKIE_SECURE': False,
+    'AUTH_COOKIE_HTTP_ONLY' : True,
+    'AUTH_COOKIE_SAMESITE': 'Lax',
 }
 
+
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'housekeeping.urls'
