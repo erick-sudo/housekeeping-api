@@ -1,0 +1,58 @@
+[
+{
+  "model": "keeper.cleantype",
+  "pk": 1,
+  "fields": {
+    "name": "Regular Cleaning",
+    "description": "Basic cleaning tasks for maintaining cleanliness in a residential or commercial space."
+    }
+},
+{
+  "model": "keeper.cleantype",
+  "pk": 2,
+  "fields": {
+    "name": "Deep Cleaning",
+    "description": "Thorough cleaning aimed at removing deep-seated dirt and grime from surfaces and hard-to-reach areas."
+    }
+},
+{
+  "model": "keeper.cleantype",
+  "pk": 3,
+  "fields": {
+    "name": "Move-In/Move-Out Cleaning",
+    "description": "Cleaning service typically performed when moving in or out of a property to ensure it's in optimal condition."
+    }
+},
+{
+  "model": "keeper.cleantype",
+  "pk": 4,
+  "fields": {
+    "name": "Spring Cleaning",
+    "description": "Thorough cleaning performed periodically to freshen up and revitalize the entire space."
+    }
+},
+{
+  "model": "keeper.cleantype",
+  "pk": 5,
+  "fields": {
+    "name": "Post-Construction Cleaning",
+    "description": "Intensive cleaning service conducted after construction or renovation projects to remove debris and prepare the space for occupancy."
+    }
+},
+{
+  "model": "keeper.cleantype",
+  "pk": 6,
+  "fields": {
+    "name": "Office Cleaning",
+    "description": "Cleaning service tailored for office spaces to maintain a clean and hygienic work environment."
+    }
+},
+{
+  "model": "keeper.cleantype",
+  "pk": 7,
+  "fields": {
+    "name": "Commercial Cleaning",
+    "description": "Cleaning service designed for commercial properties such as retail stores, restaurants, and hotels."
+    }
+}
+]

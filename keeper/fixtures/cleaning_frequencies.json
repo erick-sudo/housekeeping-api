@@ -1,0 +1,50 @@
+[
+{
+    "model": "keeper.cleaningfrequency",
+    "pk": 1,
+    "fields": {
+      "name": "One-time",
+      "description": "A single cleaning session."
+    }
+},
+{
+    "model": "keeper.cleaningfrequency",
+    "pk": 2,
+    "fields": {
+      "name": "Weekly",
+      "description": "Cleaning once every week."
+    }
+},
+{
+    "model": "keeper.cleaningfrequency",
+    "pk": 3,
+    "fields": {
+      "name": "Bi-weekly",
+      "description": "Cleaning once every two weeks."
+    }
+},
+{
+    "model": "keeper.cleaningfrequency",
+    "pk": 4,
+    "fields": {
+      "name": "Monthly",
+      "description": "Cleaning once every month."
+    }
+},
+{
+    "model": "keeper.cleaningfrequency",
+    "pk": 5,
+    "fields": {
+      "name": "Quarterly",
+      "description": "Cleaning once every three months."
+    }
+},
+{
+    "model": "keeper.cleaningfrequency",
+    "pk": 6,
+    "fields": {
+      "name": "Annual",
+      "description": "Cleaning once every year."
+    }
+}
+]

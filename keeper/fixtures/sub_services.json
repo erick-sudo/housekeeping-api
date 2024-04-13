@@ -1,0 +1,317 @@
+[
+{
+  "model": "keeper.subservice",
+  "pk": 1,
+  "fields": {
+    "name": "Dusting and wiping surfaces",
+    "price": "15.00",
+    "clean_type": 1
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 2,
+  "fields": {
+    "name": "Vacuuming carpets and rugs",
+    "price": "25.00",
+    "clean_type": 1
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 3,
+  "fields": {
+    "name": "Mopping floors",
+    "price": "20.00",
+    "clean_type": 1
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 4,
+  "fields": {
+    "name": "Cleaning kitchen surfaces and appliances",
+    "price": "25.00",
+    "clean_type": 1
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 5,
+  "fields": {
+    "name": "Cleaning bathrooms (sink, toilet, shower, etc.)",
+    "price": "25.00",
+    "clean_type": 1
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 6,
+  "fields": {
+    "name": "Cleaning interior and exterior of appliances",
+    "price": "40.00",
+    "clean_type": 2
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 7,
+  "fields": {
+    "name": "Scrubbing tiles and grout",
+    "price": "50.00",
+    "clean_type": 2
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 8,
+  "fields": {
+    "name": "Dusting hard-to-reach areas",
+    "price": "30.00",
+    "clean_type": 2
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 9,
+  "fields": {
+    "name": "Washing baseboards and moldings",
+    "price": "30.00",
+    "clean_type": 2
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 10,
+  "fields": {
+    "name": "Cleaning light fixtures and ceiling fans",
+    "price": "30.00",
+    "clean_type": 2
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 11,
+  "fields": {
+    "name": "Cleaning inside cabinets and closets",
+    "price": "30.00",
+    "clean_type": 3
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 12,
+  "fields": {
+    "name": "Removing cobwebs",
+    "price": "15.00",
+    "clean_type": 3
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 13,
+  "fields": {
+    "name": "Cleaning light switches and doorknobs",
+    "price": "15.00",
+    "clean_type": 3
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 14,
+  "fields": {
+    "name": "Cleaning window sills and tracks",
+    "price": "20.00",
+    "clean_type": 3
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 15,
+  "fields": {
+    "name": "Spot cleaning walls and doors",
+    "price": "25.00",
+    "clean_type": 3
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 16,
+  "fields": {
+    "name": "Washing windows inside and out",
+    "price": "30.00",
+    "clean_type": 4
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 17,
+  "fields": {
+    "name": "Dusting blinds and curtains",
+    "price": "25.00",
+    "clean_type": 4
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 18,
+  "fields": {
+    "name": "Cleaning patio furniture",
+    "price": "25.00",
+    "clean_type": 4
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 19,
+  "fields": {
+    "name": "Organizing and decluttering",
+    "price": "40.00",
+    "clean_type": 4
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 20,
+  "fields": {
+    "name": "Polishing silverware and fixtures",
+    "price": "25.00",
+    "clean_type": 4
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 21,
+  "fields": {
+    "name": "Removing construction debris and dust",
+    "price": "150.00",
+    "clean_type": 5
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 22,
+  "fields": {
+    "name": "Wiping down walls and ceilings",
+    "price": "75.00",
+    "clean_type": 5
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 23,
+  "fields": {
+    "name": "Cleaning air vents and ducts",
+    "price": "75.00",
+    "clean_type": 5
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 24,
+  "fields": {
+    "name": "Cleaning inside cabinets and drawers",
+    "price": "40.00",
+    "clean_type": 5
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 25,
+  "fields": {
+    "name": "Vacuuming and mopping all floors",
+    "price": "75.00",
+    "clean_type": 5
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 26,
+  "fields": {
+    "name": "Emptying trash and recycling bins",
+    "price": "25.00",
+    "clean_type": 6
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 27,
+  "fields": {
+    "name": "Sanitizing common areas",
+    "price": "40.00",
+    "clean_type": 6
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 28,
+  "fields": {
+    "name": "Cleaning desks and workstations",
+    "price": "40.00",
+    "clean_type": 6
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 29,
+  "fields": {
+    "name": "Vacuuming and mopping floors",
+    "price": "30.00",
+    "clean_type": 6
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 30,
+  "fields": {
+    "name": "Disinfecting restrooms",
+    "price": "40.00",
+    "clean_type": 6
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 31,
+  "fields": {
+    "name": "Cleaning lobbies and reception areas",
+    "price": "75.00",
+    "clean_type": 7
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 32,
+  "fields": {
+    "name": "Cleaning retail displays and shelves",
+    "price": "40.00",
+    "clean_type": 7
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 33,
+  "fields": {
+    "name": "Floor buffing and waxing",
+    "price": "150.00",
+    "clean_type": 7
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 34,
+  "fields": {
+    "name": "Window cleaning for storefronts",
+    "price": "40.00",
+    "clean_type": 7
+  }
+},
+{
+  "model": "keeper.subservice",
+  "pk": 35,
+  "fields": {
+    "name": "Restocking restroom supplies",
+    "price": "25.00",
+    "clean_type": 7
+  }
+}
+]

@@ -1,8 +1,7 @@
 from rest_framework.generics import GenericAPIView
-from rest_framework import serializers
-from .serializers import UserRegisterResializer, LoginSerializer, PasswordResetRequestViewSerializer, SetNewPasswordSerializer, LogoutUserSerializer
+from rest_framework import serializers, status
+from .serializers import UserRegisterResializer, LoginSerializer, PasswordResetRequestViewSerializer, SetNewPasswordSerializer, LogoutUserSerializer, UserSerializer
 from rest_framework.response import Response
-from rest_framework import status
 from .utils import send_code_to_user
 from .models import OneTimePassword, User
 from rest_framework.permissions import IsAuthenticated
@@ -86,12 +85,14 @@ class LoginUserView(GenericAPIView):
         return response
 
         
-class TestAuthenticationView(GenericAPIView):
+class UserProfileView(GenericAPIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
+        serializer = UserSerializer(request.user)
+        serialized_user = serializer.data
         return Response({
-            'message': 'authenticated'
+            'user': serialized_user
         }, status=status.HTTP_200_OK)
         
 class PasswordResetRequestView(GenericAPIView):

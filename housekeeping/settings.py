@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
+    'keeper.apps.KeeperConfig',
     'social_accounts.apps.SocialAccountsConfig',
     'rest_framework',
     'rest_framework.authtoken',
@@ -68,7 +69,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_COOKIE": "refresh_token",
     "AUTH_HEADER_TYPES": ("Bearer",),

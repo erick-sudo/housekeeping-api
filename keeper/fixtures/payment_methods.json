@@ -1,0 +1,37 @@
+[
+{
+    "model": "keeper.paymentmethod",
+    "pk": 1,
+    "fields": {
+      "name": "Credit Card"
+    }
+},
+{
+    "model": "keeper.paymentmethod",
+    "pk": 2,
+    "fields": {
+      "name": "Debit Card"
+    }
+},
+{
+    "model": "keeper.paymentmethod",
+    "pk": 3,
+    "fields": {
+      "name": "PayPal"
+    }
+},
+{
+    "model": "keeper.paymentmethod",
+    "pk": 4,
+    "fields": {
+      "name": "Bank Transfer"
+    }
+},
+{
+    "model": "keeper.paymentmethod",
+    "pk": 5,
+    "fields": {
+      "name": "Other"
+    }
+}
+]
