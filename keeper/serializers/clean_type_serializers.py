@@ -2,6 +2,7 @@
 from rest_framework import serializers
 from ..models import CleanType, SubService
 from main.exception_handlers import SparkleSyncException
+from .booking_serializers import ServiceSerializer
 
 class SubServiceSerializer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -10,6 +11,13 @@ class SubServiceSerializer(serializers.Serializer):
 
 
 # Serializers
+class CleanTypeSerializer(serializers.ModelSerializer):
+    sub_services = ServiceSerializer(many=True)
+    
+    class Meta:
+        model = CleanType
+        fields = ['id', 'name', 'description', 'sub_services']
+    
 class ViewCleanTypeSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
     

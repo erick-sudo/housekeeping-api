@@ -1,10 +1,28 @@
 from rest_framework import serializers
 from ..models import Booking, SubService, CleaningFrequency, PaymentMethod, CreditCard, AccessInfo
-from main.models import User
 from main.exception_handlers import SparkleSyncException
+from main.utils import send_normal_email
+from django.conf import settings
 
 # Serializers
+class PaymentMethodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentMethod
+        fields = ['id', 'name']
+        
 class AccessInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccessInfo
+        fields = ['address_name', 'address_code', 'how_to_get_in', 'any_pets', 'pets_description', 'additional_notes']
+        
+class CreateAccessInfoSerializer(serializers.Serializer):
+    address_name = serializers.CharField(max_length=255)
+    address_code = serializers.CharField(max_length=50)
+    how_to_get_in = serializers.CharField()
+    any_pets = serializers.BooleanField(default=False)
+    pets_description = serializers.CharField(default="", allow_blank=True, required=False)
+    additional_notes = serializers.CharField(default="", allow_blank=True, required=False)
+    
     class Meta:
         model = AccessInfo
         fields = ['address_name', 'address_code', 'how_to_get_in', 'any_pets', 'pets_description', 'additional_notes']
@@ -29,11 +47,11 @@ class CreateBookingSerializer(serializers.ModelSerializer):
     start_time = serializers.TimeField()
     end_time = serializers.TimeField()
     cleaning_frequency_id = serializers.IntegerField(min_value=1)
-    access_info = AccessInfoSerializer()
+    access_info = CreateAccessInfoSerializer()
     
     class Meta:
         model = Booking
-        fields = ['services', 'start_date', 'end_date', 'start_time', 'end_time', 'cleaning_frequency_id']
+        fields = ['services', 'start_date', 'end_date', 'start_time', 'end_time', 'cleaning_frequency_id', 'access_info']
         
     def validate(self, attrs):
         services = attrs.get('services')
@@ -78,6 +96,16 @@ class CreateBookingSerializer(serializers.ModelSerializer):
         booking.services.set(services)
         booking.save()
         
+        front_end_url = f"{settings.FRONT_END_URL}/dashboard/ack/{booking.id}"
+        
+        email_payload = {
+                'email_body': f"Hello {user.first_name}, Follow the link below to confirm your order \n {front_end_url}",
+                'email_subject': "Order Confirmation",
+                'to_email': user.email
+        }
+            
+        send_normal_email(email_payload)
+        
         return {
             'message': 'Order placed successfully. Wait for an acknowledgement request.',
             'order': f"{booking}",
@@ -111,7 +139,7 @@ class AcknowledgeBookingSerializer(serializers.Serializer):
         booking = Booking.objects.get(id=validated_data['booking_id'])
         payment_method = PaymentMethod.objects.get(id=validated_data['payment_method_id'])
         
-        if booking.status != "Pending":
+        if booking.status != "PENDING":
             raise SparkleSyncException(detail={'message': "order already acknowledged"}, failure_code="CONFLICT", status_code=409)
         
         if payment_method.id == PaymentMethod.objects.get(name="Credit Card").id:
@@ -128,7 +156,7 @@ class AcknowledgeBookingSerializer(serializers.Serializer):
                 if credit_card.id != users_credit_card.id:
                     raise SparkleSyncException(detail={'message': "invalid credit card"}, failure_code="FORBIDDEN", status_code=403)
                 
-        booking.status = 'Accepted'
+        booking.status = 'ACCEPTED'
         booking.payment = payment_method
         booking.save()
         

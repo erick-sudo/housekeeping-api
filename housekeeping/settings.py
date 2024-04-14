@@ -64,6 +64,7 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'main.authentication.SparkleSyncAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'EXCEPTION_HANDLER': 'main.exception_handlers.sparkle_sync_exception_handler'
 }

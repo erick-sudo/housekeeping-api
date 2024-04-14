@@ -3,11 +3,9 @@ from .models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import smart_str, smart_bytes, force_str
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
+from django.utils.encoding import smart_str, smart_bytes
 from .utils import send_normal_email
-from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework_simplejwt.tokens import RefreshToken, OutstandingToken
 from rest_framework.exceptions import AuthenticationFailed
 from django.conf import settings
 from .exception_handlers import SparkleSyncException
@@ -141,26 +139,29 @@ class SetNewPasswordSerializer(serializers.Serializer):
     
 class LogoutUserSerializer(serializers.Serializer):
        
-    default_error_messages = {
-        'bad_token': ('Token is invalid or has expired'),
-        'no_token': ('No refresh token provided'),
-    }
+    # default_error_messages = {
+    #     'bad_token': ('Token is invalid or has expired'),
+    #     'no_token': ('No refresh token provided'),
+    # }
     
-    def validate(self, attrs):
-        if 'request' not in self.context:
-            raise ValueError('The serializer context must contain the request.')
-        
+    def validate(self, attrs):       
         request = self.context['request']
         refresh_token = request.COOKIES.get(settings.SIMPLE_JWT['REFRESH_COOKIE'])
+        access_token = request.COOKIES.get(settings.SIMPLE_JWT['AUTH_COOKIE'])
+        user = request.user
         
         if not refresh_token:
-            return self.fail('no_token')
+            pass
         
-        self.refresh_token = refresh_token
+        if not access_token:
+            pass
         
         try:
-            token = RefreshToken(self.refresh_token)
+            token = RefreshToken(refresh_token)
             token.blacklist()
-        except TokenError:
-            return self.fail('bad_token')
+            
+            tokens = OutstandingToken.objects.filter(user=user).delete()
+            print(tokens)
+        except Exception as e:
+            pass
         return super().validate(attrs)

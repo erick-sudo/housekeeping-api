@@ -6,6 +6,16 @@ from ..models import Booking
 from ..serializers.booking_serializers import BookingSerializer, CreateBookingSerializer, AcknowledgeBookingSerializer
 
 # Create your views here.
+class UserBookingsView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = BookingSerializer
+    
+    def get(self, request):
+        user = request.user
+        bookings = Booking.objects.filter(user=user)
+        serializer = self.serializer_class(bookings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 class RetrieveBookingView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = BookingSerializer

@@ -15,7 +15,8 @@ def send_code_to_user(email):
     otp_code=generateOtp()
     user=User.objects.get(email=email)
     current_site="sparkle.sync"
-    email_body=f"Hello {user.first_name} thank you for signing up on {current_site} please verify your email with the \n one time passcode {otp_code}"
+    front_end_url = f"{settings.FRONT_END_URL}/verify_email"
+    email_body=f"Hello {user.first_name} thank you for signing up on {current_site} please visit {front_end_url} to verify your email with the following \n one time passcode {otp_code}"
     from_email=settings.DEFAULT_FROM_EMAIL
     
     OneTimePassword.objects.create(user=user, code=otp_code)
