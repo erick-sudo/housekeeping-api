@@ -1,13 +1,26 @@
 from rest_framework import serializers
-from ..models import Booking, SubService, CleaningFrequency, PaymentMethod, CreditCard
+from ..models import Booking, SubService, CleaningFrequency, PaymentMethod, CreditCard, AccessInfo
 from main.models import User
 from main.exception_handlers import SparkleSyncException
 
 # Serializers
+class AccessInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccessInfo
+        fields = ['address_name', 'address_code', 'how_to_get_in', 'any_pets', 'pets_description', 'additional_notes']
+        
+class ServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubService
+        fields = ['id', 'name', 'price']
+        
 class BookingSerializer(serializers.ModelSerializer):
+    services = ServiceSerializer(many=True)
+    access_info = AccessInfoSerializer()
+    
     class Meta:
         model = Booking
-        fields = '__all__'
+        fields = ['id', 'start_date', 'end_date', 'start_time', 'end_time', 'status', 'user', 'cleaning_frequency', 'payment', 'services', 'cleaners', 'access_info']
         
 class CreateBookingSerializer(serializers.ModelSerializer):
     services = serializers.ListField(child=serializers.IntegerField(), min_length=1)
@@ -16,6 +29,7 @@ class CreateBookingSerializer(serializers.ModelSerializer):
     start_time = serializers.TimeField()
     end_time = serializers.TimeField()
     cleaning_frequency_id = serializers.IntegerField(min_value=1)
+    access_info = AccessInfoSerializer()
     
     class Meta:
         model = Booking
@@ -42,6 +56,15 @@ class CreateBookingSerializer(serializers.ModelSerializer):
         services = SubService.objects.filter(id__in=validated_data['services'])
         cleaning_frequency = CleaningFrequency.objects.get(id=validated_data['cleaning_frequency_id'])
         
+        access_info = AccessInfo.objects.create(
+            address_name=validated_data['access_info']['address_name'],
+            address_code=validated_data['access_info']['address_code'],
+            how_to_get_in=validated_data['access_info']['how_to_get_in'],
+            any_pets=validated_data['access_info']['any_pets'],
+            pets_description=validated_data['access_info']['pets_description'],
+            additional_notes=validated_data['access_info']['additional_notes']
+        )
+        
         booking = Booking.objects.create(
             user=user,
             start_date=validated_data['start_date'],
@@ -49,7 +72,9 @@ class CreateBookingSerializer(serializers.ModelSerializer):
             start_time=validated_data['start_time'],
             end_time=validated_data['end_time'],
             cleaning_frequency=cleaning_frequency,
+            access_info=access_info
         )
+        
         booking.services.set(services)
         booking.save()
         
