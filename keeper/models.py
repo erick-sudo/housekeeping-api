@@ -86,7 +86,7 @@ class Booking(models.Model):
     payment = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE, null=True)
     status = models.CharField(max_length=20, choices=BOOKING_STATUS_CHOICES, default='PENDING')
     
-    access_info = models.ForeignKey(AccessInfo, related_name="booking", on_delete=models.CASCADE)
+    access_info = models.ForeignKey(AccessInfo, related_name="bookings", on_delete=models.CASCADE)
     
     cleaners = models.ManyToManyField(Cleaner, related_name="bookings")
     

@@ -2,7 +2,6 @@ from rest_framework.generics import GenericAPIView, CreateAPIView, DestroyAPIVie
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from main.exception_handlers import SparkleSyncException
 from ..models import CreditCard
 from ..serializers.credit_card_serializers import ViewCreditCardSerializer, CreateCreditCardSerializer, DestroyCreditCardSerializer
 
