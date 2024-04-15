@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
         if not phone_number:
             raise ValueError(_("phone number is required"))
         
-        user=self.model(email=email, first_name=first_name, last_name=last_name, **extra_fields)
+        user=self.model(email=email, first_name=first_name, last_name=last_name, phone_number=phone_number, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user

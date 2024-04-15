@@ -1,0 +1,32 @@
+# Ignore general files
+.git
+.gitignore
+.DS_Store
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore editor and IDE files
+.vscode/
+.idea/
+
+# Ignore environment files
+# .env
+
+# Ignore log files
+*.log
+
+# Ignore database files
+*.sqlite3
+*.db
+
+# Ignore static files
+staticfiles/
+
+# Ignore media files
+media/
+
+# Ignore temporary files and directories
+__pycache__/
+*.swp
+*.swo
