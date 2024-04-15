@@ -130,7 +130,7 @@ DATABASES = {
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
-        'HOST': 'housekeeper-db-1.c5m04cs6ozg1.eu-north-1.rds.amazonaws.com',
+        'HOST': 'postgres2.c5m04cs6ozg1.eu-north-1.rds.amazonaws.com',
         'PORT': env('DB_PORT'),
     }
 }
